@@ -48,34 +48,42 @@ SSLL* SSLL_insert(SSLL* l, Segment s)
 		newCell->tail = NULL;
 		return newCell;
 	}
-
 	// l is not empty
+	
+	// if s is longer than anything in l:
+	if (longerThan(s, l->head))
 	{
-		if (longerThan(s, l->head))
-		{
-			newCell->tail = l;
-			return newCell;
-		}
+		newCell->tail = l;
+		return newCell;
+	}
 
-		SSLL* result = l;
-		SSLL* prev = NULL;
-		while (l->tail != NULL && longerThan(l->head, s))
-		{
-			prev = l;
-			l = l->tail;
-		}
-		if (l->tail == NULL)
-		{
-			l->tail = newCell;
-			newCell->tail = NULL;
-			return result;
-		}
-		else
-		{
-			prev->tail = newCell;
-			newCell->tail = l;
-			return result;
-		}
+	// we will eventually return 'result'
+	SSLL* result = l;
+
+	// walk through the lsit until the end or we find sth shorter than s
+	SSLL* prev = NULL;
+	while (l->tail != NULL && !longerThan(s, l->head))
+	{
+		prev = l;
+		l = l->tail;
+	}
+
+	// if l is the first (longest) element shorter than s
+	if (longerThan(s, l->head))
+	{
+		prev->tail = newCell;
+		newCell->tail = l;
+		return result;
+	}
+
+	// if s is shorter than anything on the list
+	else
+	{
+		assert(l->tail == NULL);
+
+		l->tail = newCell;
+		newCell->tail = NULL;
+		return result;
 	}
 }
 

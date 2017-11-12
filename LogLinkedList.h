@@ -116,7 +116,7 @@ SWCLL* registerDeallocation(SWCLL* l, void* _deallocated)
 
 		if (l->head.count == 0)
 		{
-			mem_block_free((void*) l->head.leftInclusive);
+			kernel_mem_block_free((void*) l->head.leftInclusive);
 			return SWCLL_remove(result, l->head);
 		}
 		else
